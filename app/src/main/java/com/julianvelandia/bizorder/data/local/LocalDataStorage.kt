@@ -32,7 +32,7 @@ class LocalDataStorage @Inject constructor(
 
     //Orders Realm
 
-    suspend fun insertRealm(
+    suspend fun addOrdersRealm(
         ordersObject: List<OrderObject>
     ) = orderRealm.addOrders(ordersObject)
 

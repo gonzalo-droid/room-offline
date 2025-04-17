@@ -1,11 +1,11 @@
 package com.julianvelandia.bizorder.data
 
 import com.julianvelandia.bizorder.data.local.LocalDataStorage
-import com.julianvelandia.bizorder.data.local.toDomain
-import com.julianvelandia.bizorder.data.local.toEntity
+import com.julianvelandia.bizorder.data.local.room.OrderEntity.Companion.toDomain
 import com.julianvelandia.bizorder.data.remote.RemoteDataStorage
 import com.julianvelandia.bizorder.data.remote.toDomain
 import com.julianvelandia.bizorder.domain.Order
+import com.julianvelandia.bizorder.domain.Order.Companion.toEntity
 import com.julianvelandia.bizorder.domain.OrdersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -19,10 +19,10 @@ class OrdersRepositoryImpl(
 
     override fun getOrder(): Flow<Result<List<Order>>> {
         return localDataStorage.getAllOrdersRoom()
-            .map { localOrders ->
+            .map { localOrders -> // after of onStart emit this values
                 Result.success(localOrders.map { it.toDomain() })
             }
-            .onStart {
+            .onStart { // launch request
                 val remoteResult = remoteDataStorage.getOrders()
                     .mapCatching { dtoList ->
                         dtoList.map { it.toDomain() }
