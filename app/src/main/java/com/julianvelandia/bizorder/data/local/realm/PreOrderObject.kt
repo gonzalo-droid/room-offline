@@ -5,7 +5,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 
 class PreOrderObject : RealmObject {
     @PrimaryKey
-    var id: Long = System.currentTimeMillis()
+    var id: Long = System.currentTimeMillis() // don't use autoincrement in Realm
     var customerName: String = ""
     var item: String = ""
     var isSent: Boolean = false
