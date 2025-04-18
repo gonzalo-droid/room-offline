@@ -168,7 +168,7 @@ fun PreviewPreOrderItem() {
             id = 1,
             customerName = "Julian Velandia",
             product = "MacBook Pro 2021",
-            isSent = true
+            isSent = false
         ),
         onSync = {},
         onDelete = {}

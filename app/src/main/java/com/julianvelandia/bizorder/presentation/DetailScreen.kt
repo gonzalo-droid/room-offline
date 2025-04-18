@@ -28,11 +28,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.julianvelandia.bizorder.domain.Order
+import com.julianvelandia.bizorder.ui.theme.BizOrderTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,6 +45,16 @@ fun DetailScreen(
 ) {
     val state by viewModel.detailState.collectAsState()
 
+    DetailOrder(modifier, state, onBack)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailOrder(
+    modifier: Modifier,
+    state: DetailState,
+    onBack: () -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -76,6 +88,7 @@ fun DetailScreen(
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(16.dp)
                 )
+
                 state.data != null -> {
                     state.data?.let { order ->
                         ItemOrder(order = order)
@@ -87,7 +100,7 @@ fun DetailScreen(
 }
 
 @Composable
-fun ItemOrder(order: Order){
+fun ItemOrder(order: Order) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -133,6 +146,29 @@ fun ItemOrder(order: Order){
             text = "Total: $${order.total}",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDetailScreen() {
+    BizOrderTheme {
+        DetailOrder(
+            modifier = Modifier,
+            state = DetailState(
+                isError = false,
+                isLoading = false,
+                data = Order(
+                    id = "1",
+                    customerName = "John Doe",
+                    item = "Coffee",
+                    total = 5.99,
+                    imageUrl = "https://via.placeholder.com/48"
+                )
+            ),
+            onBack = {}
         )
     }
 }
